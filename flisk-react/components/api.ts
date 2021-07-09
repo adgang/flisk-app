@@ -10,10 +10,14 @@ export const getClient = async () => {
     return clientCache;
 };
 
-export const getAccount = async () => {
+export const getAccount = async (address: string) => {
     const client = await getClient()
-    const rec = await client.account.get('efc8d9b05c6e911fb38713c963eeb02a9989c036');
-    console.info(rec)
+    try {
+        const rec = await client.account.get(address);
+        console.log(rec)
+    } catch (err) {
+        console.error("some error", err)
+    }
 }
 
 
