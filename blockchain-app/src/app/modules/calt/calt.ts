@@ -176,9 +176,9 @@ const getAllCALTAssetTokensAsJSON = async dataAccess => {
 		.registeredCALTAssetTokens;
 };
 
-const setAllCALTAssetTokens = async (stateStore, NFTTokens) => {
+const setAllCALTAssetTokens = async (stateStore, tokens) => {
 	const registeredTokens = {
-		registeredNFTTokens: NFTTokens.sort((a, b) => a.id.compare(b.id)),
+		registeredCALTAssetTokens: tokens.sort((a, b) => a.id.compare(b.id)),
 	};
 
 	await stateStore.chain.set(
@@ -217,9 +217,9 @@ const getAllCALTLiabilityTokensAsJSON = async dataAccess => {
 		.registeredCALTLiabilityTokens;
 };
 
-const setAllCALTLiabilityTokens = async (stateStore, NFTTokens) => {
+const setAllCALTLiabilityTokens = async (stateStore, tokens) => {
 	const registeredTokens = {
-		registeredNFTTokens: NFTTokens.sort((a, b) => a.id.compare(b.id)),
+		registeredCALTLiabilityTokens: tokens.sort((a, b) => a.id.compare(b.id)),
 	};
 
 	await stateStore.chain.set(
