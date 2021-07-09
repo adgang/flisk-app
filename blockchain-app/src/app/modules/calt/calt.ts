@@ -92,8 +92,8 @@ const registeredCALTLiabilityTokensSchema = {
 	},
 };
 
-const CHAIN_STATE_ASSET_TOKENS = 'nft:registeredCALTAssetTokens';
-const CHAIN_STATE_LIABILITY_TOKENS = 'nft:registeredCALTLiabilityTokens';
+const CHAIN_STATE_ASSET_TOKENS = 'calt:registeredCALTAssetTokens';
+const CHAIN_STATE_LIABILITY_TOKENS = 'calt:registeredCALTLiabilityTokens';
 
 const createCALTAssetLiabilityTokens = ({
 	name,

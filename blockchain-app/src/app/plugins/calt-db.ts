@@ -162,7 +162,7 @@ const getTransactionAssetSchema = (transaction, registeredSchema) => {
 	return txAssetSchema.schema;
 };
 
-module.exports = {
+export {
 	getDBInstance,
 	getAllTransactions,
 	getTransactions,
