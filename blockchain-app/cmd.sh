@@ -1,0 +1,1 @@
+alias flisk=./bin/run
