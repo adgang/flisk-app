@@ -16,14 +16,19 @@
 
 /* eslint-disable class-methods-use-this */
 
-import { 
-    BaseModule, 
-    AfterBlockApplyContext, 
-    TransactionApplyContext, 
-    BeforeBlockApplyContext, 
-    AfterGenesisBlockApplyContext, 
-    // GenesisConfig 
+import {
+    AfterBlockApplyContext,
+
+
+    AfterGenesisBlockApplyContext, BaseModule,
+
+
+    BeforeBlockApplyContext, TransactionApplyContext
 } from 'lisk-sdk';
+import { BuybackDebtAsset } from "./assets/buyback_debt_asset";
+import { BuyDebtAsset } from "./assets/buy_debt_asset";
+import { CreateDebtAsset } from "./assets/create_debt_asset";
+import { LiquidateDebtAsset } from "./assets/liquidate_debt_asset";
 
 export class CaltModule extends BaseModule {
     public actions = {
@@ -46,7 +51,7 @@ export class CaltModule extends BaseModule {
 		// },
     };
     public name = 'calt';
-    public transactionAssets = [];
+    public transactionAssets = [new CreateDebtAsset(), new BuyDebtAsset(), new LiquidateDebtAsset(), new BuybackDebtAsset()];
     public events = [
         // Example below
         // 'calt:newBlock',
