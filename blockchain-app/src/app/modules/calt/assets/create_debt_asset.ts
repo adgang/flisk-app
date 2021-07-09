@@ -1,4 +1,13 @@
 import { BaseAsset, ApplyAssetContext, ValidateAssetContext } from 'lisk-sdk';
+import {
+	getAllCALTAssetTokens,
+	setAllCALTAssetTokens,
+	getAllCALTAssetTokensAsJSON,
+	getAllCALTLiabilityTokens,
+	setAllCALTLiabilityTokens,
+	getAllCALTLiabilityTokensAsJSON,
+	createCALTAssetLiabilityTokens,
+} from '../calt';
 
 export class CreateDebtAsset extends BaseAsset {
 	public name = 'createDebt';
@@ -42,7 +51,36 @@ export class CreateDebtAsset extends BaseAsset {
 	}
 
 	// eslint-disable-next-line @typescript-eslint/require-await
-	public async apply({ asset, transaction, stateStore }: ApplyAssetContext<{}>): Promise<void> {
-		throw new Error('Asset "createDebt" apply hook is not implemented.');
+	public async apply({
+		asset,
+		stateStore,
+		reducerHandler,
+		transaction,
+	}: ApplyAssetContext<any>): Promise<void> {
+		const senderAddress = transaction.senderAddress;
+		const senderAccount: any = await stateStore.account.get(senderAddress);
+
+		// create asset and liability tokens
+		const tokens = createCALTAssetLiabilityTokens({
+			name: asset.name,
+			ownerAddress: senderAddress,
+			nonce: transaction.nonce,
+			maturityValue: asset.maturityValue,
+			maturityDate: asset.maturityDate,
+		});
+
+		// update sender account with asset and liability tokens
+		senderAccount.calt.ownAssets.push(tokens.assetToken);
+		senderAccount.calt.ownLiabilities.push(tokens.liabilityToken);
+		await stateStore.account.set(senderAddress, senderAccount);
+
+		// save asset and liability tokens
+		const allAssetTokens = await getAllCALTAssetTokens(stateStore);
+		const allLiabilityTokens = await getAllCALTLiabilityTokens(stateStore);
+
+		allAssetTokens.push(tokens.assetToken);
+		allLiabilityTokens.push(tokens.liabilityToken);
+		await setAllCALTAssetTokens(stateStore, allAssetTokens);
+		await setAllCALTLiabilityTokens(stateStore, allLiabilityTokens);
 	}
 }

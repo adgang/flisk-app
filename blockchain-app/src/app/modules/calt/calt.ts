@@ -212,20 +212,16 @@ const setAllCALTLiabilityTokens = async (stateStore, NFTTokens) => {
 	);
 };
 
-module.exports = {
+export {
 	CHAIN_STATE_ASSET_TOKENS,
 	CHAIN_STATE_LIABILITY_TOKENS,
-
 	registeredCALTAssetTokensSchema,
 	registeredCALTLiabilityTokensSchema,
-
 	getAllCALTAssetTokens,
 	setAllCALTAssetTokens,
 	getAllCALTAssetTokensAsJSON,
-
 	getAllCALTLiabilityTokens,
 	setAllCALTLiabilityTokens,
 	getAllCALTLiabilityTokensAsJSON,
-
 	createCALTAssetLiabilityTokens,
 };

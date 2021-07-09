@@ -17,28 +17,26 @@
 /* eslint-disable class-methods-use-this */
 
 import {
-    AfterBlockApplyContext,
-
-
-    AfterGenesisBlockApplyContext, BaseModule,
-
-
-    BeforeBlockApplyContext, TransactionApplyContext
+	AfterBlockApplyContext,
+	AfterGenesisBlockApplyContext,
+	BaseModule,
+	BeforeBlockApplyContext,
+	TransactionApplyContext,
 } from 'lisk-sdk';
-import { BuybackDebtAsset } from "./assets/buyback_debt_asset";
-import { BuyDebtAsset } from "./assets/buy_debt_asset";
-import { CreateDebtAsset } from "./assets/create_debt_asset";
-import { LiquidateDebtAsset } from "./assets/liquidate_debt_asset";
+import { BuybackDebtAsset } from './assets/buyback_debt_asset';
+import { BuyDebtAsset } from './assets/buy_debt_asset';
+import { CreateDebtAsset } from './assets/create_debt_asset';
+import { LiquidateDebtAsset } from './assets/liquidate_debt_asset';
 
 export class CaltModule extends BaseModule {
-    public actions = {
-        // Example below
-        // getBalance: async (params) => this._dataAccess.account.get(params.address).token.balance,
-        // getBlockByID: async (params) => this._dataAccess.blocks.get(params.id),
-    };
-    public reducers = {
-        // Example below
-        // getBalance: async (
+	public actions = {
+		// Example below
+		// getBalance: async (params) => this._dataAccess.account.get(params.address).token.balance,
+		// getBlockByID: async (params) => this._dataAccess.blocks.get(params.id),
+	};
+	public reducers = {
+		// Example below
+		// getBalance: async (
 		// 	params: Record<string, unknown>,
 		// 	stateStore: StateStore,
 		// ): Promise<bigint> => {
@@ -49,44 +47,74 @@ export class CaltModule extends BaseModule {
 		// 	const account = await stateStore.account.getOrDefault<TokenAccount>(address);
 		// 	return account.token.balance;
 		// },
-    };
-    public name = 'calt';
-    public transactionAssets = [new CreateDebtAsset(), new BuyDebtAsset(), new LiquidateDebtAsset(), new BuybackDebtAsset()];
-    public events = [
-        // Example below
-        // 'calt:newBlock',
-    ];
-    public id = 4000;
+	};
+	public name = 'calt';
+	public transactionAssets = [
+		new CreateDebtAsset(),
+		new BuyDebtAsset(),
+		new LiquidateDebtAsset(),
+		new BuybackDebtAsset(),
+	];
+	public events = [
+		// Example below
+		// 'calt:newBlock',
+	];
+	public id = 4000;
 
-    // public constructor(genesisConfig: GenesisConfig) {
-    //     super(genesisConfig);
-    // }
+	accountSchema = {
+		type: 'object',
+		required: ['ownAssets', 'ownLiabilities'],
+		properties: {
+			ownAssets: {
+				type: 'array',
+				fieldNumber: 4,
+				items: {
+					dataType: 'bytes',
+				},
+			},
+			ownLiabilities: {
+				type: 'array',
+				fieldNumber: 5,
+				items: {
+					dataType: 'bytes',
+				},
+			},
+		},
+		default: {
+			ownAssets: [],
+			ownLiabilities: [],
+		},
+	};
 
-    // Lifecycle hooks
-    public async beforeBlockApply(_input: BeforeBlockApplyContext) {
-        // Get any data from stateStore using block info, below is an example getting a generator
-        // const generatorAddress = getAddressFromPublicKey(_input.block.header.generatorPublicKey);
+	// public constructor(genesisConfig: GenesisConfig) {
+	//     super(genesisConfig);
+	// }
+
+	// Lifecycle hooks
+	public async beforeBlockApply(_input: BeforeBlockApplyContext) {
+		// Get any data from stateStore using block info, below is an example getting a generator
+		// const generatorAddress = getAddressFromPublicKey(_input.block.header.generatorPublicKey);
 		// const generator = await _input.stateStore.account.get<TokenAccount>(generatorAddress);
-    }
+	}
 
-    public async afterBlockApply(_input: AfterBlockApplyContext) {
-        // Get any data from stateStore using block info, below is an example getting a generator
-        // const generatorAddress = getAddressFromPublicKey(_input.block.header.generatorPublicKey);
+	public async afterBlockApply(_input: AfterBlockApplyContext) {
+		// Get any data from stateStore using block info, below is an example getting a generator
+		// const generatorAddress = getAddressFromPublicKey(_input.block.header.generatorPublicKey);
 		// const generator = await _input.stateStore.account.get<TokenAccount>(generatorAddress);
-    }
+	}
 
-    public async beforeTransactionApply(_input: TransactionApplyContext) {
-        // Get any data from stateStore using transaction info, below is an example
-        // const sender = await _input.stateStore.account.getOrDefault<TokenAccount>(_input.transaction.senderAddress);
-    }
+	public async beforeTransactionApply(_input: TransactionApplyContext) {
+		// Get any data from stateStore using transaction info, below is an example
+		// const sender = await _input.stateStore.account.getOrDefault<TokenAccount>(_input.transaction.senderAddress);
+	}
 
-    public async afterTransactionApply(_input: TransactionApplyContext) {
-        // Get any data from stateStore using transaction info, below is an example
-        // const sender = await _input.stateStore.account.getOrDefault<TokenAccount>(_input.transaction.senderAddress);
-    }
+	public async afterTransactionApply(_input: TransactionApplyContext) {
+		// Get any data from stateStore using transaction info, below is an example
+		// const sender = await _input.stateStore.account.getOrDefault<TokenAccount>(_input.transaction.senderAddress);
+	}
 
-    public async afterGenesisBlockApply(_input: AfterGenesisBlockApplyContext) {
-        // Get any data from genesis block, for example get all genesis accounts
-        // const genesisAccoounts = genesisBlock.header.asset.accounts;
-    }
+	public async afterGenesisBlockApply(_input: AfterGenesisBlockApplyContext) {
+		// Get any data from genesis block, for example get all genesis accounts
+		// const genesisAccoounts = genesisBlock.header.asset.accounts;
+	}
 }
