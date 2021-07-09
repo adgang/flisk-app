@@ -1,0 +1,14 @@
+{
+  "name": "flisk-blockchain-app",
+  "version": "0.1.0",
+  "description": "Blockchain modules for flisk",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "Lisk"
+  ],
+  "author": "Aditya Gangipamula",
+  "license": "MIT"
+}
