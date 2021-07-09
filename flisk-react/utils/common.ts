@@ -61,5 +61,7 @@ export const calcMinTxFee = (
 ) => {
   const assetBytes = codec.encode(assetSchema, tx.asset);
   const bytes = codec.encode(baseAssetSchema, { ...tx, asset: assetBytes });
+  console.log(bytes.length);
+  console.log(minFeePerByte);
   return BigInt(bytes.length * minFeePerByte);
 };

@@ -5,6 +5,8 @@ import { useState, useEffect } from 'react';
 import { getAccount } from '../components/api';
 import Footer from '../components/footer';
 import Header from '../components/header';
+import { createCALTDebtToken } from '../utils/transactions/create-debt';
+import { fetchNodeInfo } from '../utils/api';
 export default function Accounts() {
   const addresses = [
     'efc8d9b05c6e911fb38713c963eeb02a9989c036',
@@ -40,6 +42,21 @@ export default function Accounts() {
     );
   }
 
+  async function createDebt() {
+    const nodeInfo = await fetchNodeInfo();
+    console.log(nodeInfo);
+    await createCALTDebtToken({
+      name: 'blah',
+      maturityValue: 1000,
+      maturityDate: Date.UTC(2021, 12, 3),
+      minPurchaseMargin: 0,
+      passphrase:
+        'slide edge jar pupil street tennis strong dragon movie balcony post rescue',
+      fee: '10',
+      networkIdentifier: nodeInfo.networkIdentifier,
+      minFeePerByte: nodeInfo.genesisConfig.minFeePerByte,
+    });
+  }
   function AccountCard({ account }: any) {
     console.log(account);
     return (
@@ -50,6 +67,7 @@ export default function Accounts() {
             <p>Balance: {account.token.balance.toString()}</p>
             <p>Nonce: {account.sequence.nonce.toString()}</p>
             <p>Delegate: {account.dpos.delegate?.username.toString()}</p>
+            <button onClick={createDebt}>CreateDebt</button>
           </a>
         </Link>
       </section>
