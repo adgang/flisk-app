@@ -25,7 +25,7 @@ export class CreateDebtAsset extends BaseAsset {
 				fieldNumber: 1,
 			},
 			maturityValue: {
-				dataType: 'uint32',
+				dataType: 'uint64',
 				fieldNumber: 2,
 			},
 			name: {
