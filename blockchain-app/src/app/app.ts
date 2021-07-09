@@ -7,7 +7,7 @@ export const getApplication = (
 	config: PartialApplicationConfig,
 ): Application => {
 	// 3.Update the genesis block accounts to include NFT module attributes
-	genesisBlock.header.timestamp = 1605699440;
+	genesisBlock.header.timestamp = 1625812521;
 	genesisBlock.header.asset.accounts = genesisBlock.header.asset.accounts.map(a =>
 		utils.objects.mergeDeep({}, a, {
 			calt: {
@@ -20,8 +20,8 @@ export const getApplication = (
 	// 4.Update application config to include unique label
 	// and communityIdentifier to mitigate transaction replay
 	const appConfig = utils.objects.mergeDeep({}, config, {
-		label: 'nft-app',
-		genesisConfig: { communityIdentifier: 'NFT' }, //In order to have a unique networkIdentifier
+		label: 'flisk-blockchain-app',
+		genesisConfig: { communityIdentifier: 'CALT' }, //In order to have a unique networkIdentifier
 		logger: {
 			consoleLogLevel: 'info',
 		},

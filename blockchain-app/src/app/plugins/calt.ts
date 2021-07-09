@@ -1,6 +1,6 @@
 import { BaseChannel, BasePlugin, codec } from 'lisk-sdk';
-import express from 'express';
-import cors from 'cors';
+import * as express from 'express';
+import * as cors from 'cors';
 import {
 	getDBInstance,
 	getAllTransactions,
@@ -56,6 +56,7 @@ export class CALTAPIPlugin extends BasePlugin {
 			return;
 		}
 		this._nodeInfo = await this._channel.invoke('app:getNodeInfo');
+		console.log(this._nodeInfo);
 
 		this._app.use(cors({ origin: '*', methods: ['GET', 'POST', 'PUT'] }));
 		this._app.use(express.json());

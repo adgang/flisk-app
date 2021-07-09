@@ -1,5 +1,6 @@
-const { codec, cryptography } = require('lisk-sdk');
-const debug = require('debug')('calt');
+import { codec, cryptography } from 'lisk-sdk';
+import * as debugFactory from 'debug';
+const debug = debugFactory('calt');
 
 const registeredCALTAssetTokensSchema = {
 	$id: 'calt/asset/registeredTokens',
@@ -138,15 +139,20 @@ const createCALTAssetLiabilityTokens = ({
 	return tokens;
 };
 
-const getAllCALTAssetTokens = async stateStore => {
-	const registeredTokensBuffer = await stateStore.chain.get(CHAIN_STATE_ASSET_TOKENS);
+const getAllCALTAssetTokens = async dataAccess => {
+	const registeredTokensBuffer = await dataAccess.getChainState(CHAIN_STATE_ASSET_TOKENS);
 	if (!registeredTokensBuffer) {
 		return [];
 	}
 
-	const registeredTokens = codec.decode(registeredCALTAssetTokensSchema, registeredTokensBuffer);
+	const registeredTokens = codec.decode<any>(
+		registeredCALTAssetTokensSchema,
+		registeredTokensBuffer,
+	);
+	debug(registeredTokens);
+	debug('-----=======----');
 
-	return registeredTokens.registeredNFTTokens;
+	return registeredTokens.registeredCALTAssetTokens;
 };
 
 const getAllCALTAssetTokensAsJSON = async dataAccess => {
@@ -156,9 +162,18 @@ const getAllCALTAssetTokensAsJSON = async dataAccess => {
 		return [];
 	}
 
-	const registeredTokens = codec.decode(registeredCALTAssetTokensSchema, registeredTokensBuffer);
+	const registeredTokens = codec.decode<any>(
+		registeredCALTAssetTokensSchema,
+		registeredTokensBuffer,
+	);
 
-	return codec.toJSON(registeredCALTAssetTokensSchema, registeredTokens).registeredNFTTokens;
+	console.log(registeredTokens);
+	console.log('-----=======----');
+
+	debug(registeredTokens);
+	debug('-----=======----');
+	return codec.toJSON<any>(registeredCALTAssetTokensSchema, registeredTokens)
+		.registeredCALTAssetTokens;
 };
 
 const setAllCALTAssetTokens = async (stateStore, NFTTokens) => {
@@ -172,18 +187,18 @@ const setAllCALTAssetTokens = async (stateStore, NFTTokens) => {
 	);
 };
 
-const getAllCALTLiabilityTokens = async stateStore => {
-	const registeredTokensBuffer = await stateStore.chain.get(CHAIN_STATE_LIABILITY_TOKENS);
+const getAllCALTLiabilityTokens = async dataAccess => {
+	const registeredTokensBuffer = await dataAccess.getChainState(CHAIN_STATE_LIABILITY_TOKENS);
 	if (!registeredTokensBuffer) {
 		return [];
 	}
 
-	const registeredTokens = codec.decode(
+	const registeredTokens = codec.decode<any>(
 		registeredCALTLiabilityTokensSchema,
 		registeredTokensBuffer,
 	);
 
-	return registeredTokens.registeredNFTTokens;
+	return registeredTokens.registeredCALTLiabilityTokens;
 };
 
 const getAllCALTLiabilityTokensAsJSON = async dataAccess => {
@@ -193,12 +208,13 @@ const getAllCALTLiabilityTokensAsJSON = async dataAccess => {
 		return [];
 	}
 
-	const registeredTokens = codec.decode(
+	const registeredTokens = codec.decode<any>(
 		registeredCALTLiabilityTokensSchema,
 		registeredTokensBuffer,
 	);
 
-	return codec.toJSON(registeredCALTLiabilityTokensSchema, registeredTokens).registeredNFTTokens;
+	return codec.toJSON<any>(registeredCALTLiabilityTokensSchema, registeredTokens)
+		.registeredCALTLiabilityTokens;
 };
 
 const setAllCALTLiabilityTokens = async (stateStore, NFTTokens) => {

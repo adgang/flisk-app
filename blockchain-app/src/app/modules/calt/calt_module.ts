@@ -16,23 +16,48 @@
 
 /* eslint-disable class-methods-use-this */
 
+import { TokenAccount } from 'lisk-framework/dist-node/modules/token/types';
 import {
 	AfterBlockApplyContext,
 	AfterGenesisBlockApplyContext,
 	BaseModule,
 	BeforeBlockApplyContext,
+	StateStore,
 	TransactionApplyContext,
 } from 'lisk-sdk';
+import * as debugFactory from 'debug';
 import { BuybackDebtAsset } from './assets/buyback_debt_asset';
 import { BuyDebtAsset } from './assets/buy_debt_asset';
 import { CreateDebtAsset } from './assets/create_debt_asset';
 import { LiquidateDebtAsset } from './assets/liquidate_debt_asset';
+import {
+	getAllCALTAssetTokensAsJSON,
+	getAllCALTLiabilityTokensAsJSON,
+	getAllCALTAssetTokens,
+	getAllCALTLiabilityTokens,
+} from './calt';
+const debug = debugFactory('calt-module');
 
 export class CaltModule extends BaseModule {
 	public actions = {
 		// Example below
 		// getBalance: async (params) => this._dataAccess.account.get(params.address).token.balance,
 		// getBlockByID: async (params) => this._dataAccess.blocks.get(params.id),
+		getAllCALTAssetTokens: async params => {
+			const jsonTokens = await getAllCALTAssetTokensAsJSON(this._dataAccess);
+			console.log(jsonTokens);
+			debug('pppppppp');
+			const tokens = await getAllCALTAssetTokens(this._dataAccess);
+			debug(tokens);
+			return jsonTokens;
+		},
+		getAllCALTLiabilityTokens: async params => {
+			const jsonTokens = await getAllCALTLiabilityTokensAsJSON(this._dataAccess);
+			console.log(jsonTokens);
+			const tokens = await getAllCALTLiabilityTokens(this._dataAccess);
+			console.log(tokens);
+			return tokens;
+		},
 	};
 	public reducers = {
 		// Example below
